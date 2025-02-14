@@ -74,7 +74,7 @@ async function generateRandomComment(songTitle) {
           content: `Generate a short, engaging comment about a song. Include the song title "${songTitle}" randomly at the beginning, middle, or end of the comment.`
         }
       ],
-      max_tokens: 7, // Further limit the length of the comment
+      max_tokens: 17, // Further limit the length of the comment
       temperature: 0.7 // Adjust temperature for creativity
     }, {
       headers: {
