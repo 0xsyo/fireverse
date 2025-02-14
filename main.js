@@ -27,6 +27,20 @@ function rainbowBanner() {
 
 rainbowBanner();
 
+function randomPrefix() {
+  const prefixes = [
+    "Wow, ",
+    "Honestly, ",
+    "I can't believe it, but ",
+    "Have you noticed? ",
+    "Is it just me, or ",
+    "Seriously, ",
+    "I must say, ",
+    "Interestingly, "
+  ];
+  return prefixes[Math.floor(Math.random() * prefixes.length)];
+}
+
 async function generateRandomComment(songTitle) {
   try {
     const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
@@ -37,7 +51,7 @@ async function generateRandomComment(songTitle) {
           content: `Generate a short, engaging comment about a song. Include the song title "${songTitle}" randomly at the beginning, middle, or end of the comment.`
         }
       ],
-      max_tokens: 25, // Further limit the length of the comment
+      max_tokens: 7, // Further limit the length of the comment
       temperature: 0.7 // Adjust temperature for creativity
     }, {
       headers: {
@@ -46,7 +60,9 @@ async function generateRandomComment(songTitle) {
       }
     });
 
-    return response.data.choices[0].message.content.trim();
+    let comment = response.data.choices[0].message.content.trim();
+    comment = randomPrefix() + comment.charAt(0).toLowerCase() + comment.slice(1);
+    return comment;
   } catch (error) {
     throw new Error('Failed to generate comment using Groq API');
   }
