@@ -27,20 +27,29 @@ function rainbowBanner() {
 
 rainbowBanner();
 
-function getRandomTheme() {
-  const themes = [
-    "Music Production Techniques",
-    "Influence of Music Genres",
-    "Impact of Lyrics on Listeners",
-    "Evolution of Music Technology",
-    "Cultural Significance of Music",
-    "Role of Music in Media",
-    "Music Theory and Composition",
-    "Psychological Effects of Music",
-    "Music and Social Movements",
-    "Future of Music Industry"
-  ];
-  return themes[Math.floor(Math.random() * themes.length)];
+async function generateRandomComment(songTitle) {
+  try {
+    const response = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
+      model: 'llama-3.3-70b-versatile',
+      messages: [
+        { 
+          role: 'user', 
+          content: `Generate a short, engaging comment about a song. Include the song title "${songTitle}" randomly at the beginning, middle, or end of the comment.`
+        }
+      ],
+      max_tokens: 25, // Further limit the length of the comment
+      temperature: 0.7 // Adjust temperature for creativity
+    }, {
+      headers: {
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    return response.data.choices[0].message.content.trim();
+  } catch (error) {
+    throw new Error('Failed to generate comment using Groq API');
+  }
 }
 
 function shuffleArray(array) {
@@ -49,87 +58,6 @@ function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
-}
-
-function generateRandomWords() {
-  const words = {
-    subjects: [
-      "music", "songs", "melodies", "rhythms", "lyrics", "compositions", "genres", "harmonies", "beats", "albums"
-    ],
-    verbs: [
-      "influence", "affect", "enhance", "transform", "elevate", "inspire", "shape", "define", "capture", "reflect"
-    ],
-    objects: [
-      "emotions", "moods", "cultures", "trends", "listeners", "artists", "performances", "experiences", "audiences", "creativity"
-    ],
-    questions: [
-      "How", "What", "Can", "Why", "Does", "What impact does", "How does", "What effect does", "Can", "How can"
-    ],
-    modifiers: [
-      "the perception of", "the evolution of", "the understanding of", "the popularity of", "the influence of", "the role of", "the significance of"
-    ]
-  };
-
-  const subject = words.subjects[Math.floor(Math.random() * words.subjects.length)];
-  const verb = words.verbs[Math.floor(Math.random() * words.verbs.length)];
-  const object = words.objects[Math.floor(Math.random() * words.objects.length)];
-  const question = words.questions[Math.floor(Math.random() * words.questions.length)];
-  const modifier = words.modifiers[Math.floor(Math.random() * words.modifiers.length)];
-
-  return {
-    subject,
-    verb,
-    object,
-    question,
-    modifier
-  };
-}
-
-function generateHardcodedComment(songTitle) {
-  const { subject, verb, object, question, modifier } = generateRandomWords();
-  const comments = [
-    `I love how ${subject} ${verb} ${modifier} ${object} in ${songTitle}.`,
-    `The ${subject} in ${songTitle} really ${verb} my ${object}.`,
-    `${songTitle} has such a ${modifier} ${subject} that ${verb} ${object}.`,
-    `Listening to ${songTitle} makes me feel ${object}.`,
-    `Can ${subject} in ${songTitle} ${verb} ${modifier} ${object}?`,
-    `How does ${songTitle} ${verb} ${modifier} ${object}?`
-  ];
-  return comments[Math.floor(Math.random() * comments.length)];
-}
-
-async function generateRandomComment(songTitle) {
-  try {
-    const theme = getRandomTheme();
-    const response = await axios.post('https://api.groq.cloud/openai/v1/chat/completions', {
-      model: 'llama-3.3-70b-versatile',
-      messages: [
-        { 
-          role: 'user', 
-          content: `Generate a positive, constructive, or emotional comment related to the song '${songTitle}' in the context of ${theme}.`
-        }
-      ],
-      temperature: 0.9
-    });
-    
-    if (response.data && response.data.choices && response.data.choices.length > 0) {
-      return response.data.choices[0].message.content;
-    } else {
-      return generateHardcodedComment(songTitle);
-    }
-  } catch (error) {
-    return generateHardcodedComment(songTitle);
-  }
-}
-
-function getRandomPosition() {
-  const positions = ["start", "middle", "end"];
-  return positions[Math.floor(Math.random() * positions.length)];
-}
-
-function getRandomPrefix() {
-  const prefixes = ["Regarding", "About", "Concerning", "In reference to", "On the topic of"];
-  return prefixes[Math.floor(Math.random() * prefixes.length)];
 }
 
 class MusicBot {
@@ -279,29 +207,16 @@ class MusicBot {
                 process.stdout.write('.');
             }
         } catch (error) {
-            // Silent heartbeat errors
         }
     }
 
     async generateComment(songTitle) {
         try {
             const comment = await generateRandomComment(songTitle);
-            const position = getRandomPosition();
-            const prefix = getRandomPrefix();
-            let finalComment;
-
-            if (position === "start") {
-                finalComment = `${prefix} ${songTitle} ${comment}`;
-            } else if (position === "middle") {
-                finalComment = `${comment} ${prefix} ${songTitle}`;
-            } else {
-                finalComment = `${comment} - ${prefix} ${songTitle}`;
-            }
-
-            return finalComment;
+            return comment;
         } catch (error) {
             this.log('Error generating comment: ' + error.message);
-            return `I really like the song ${songTitle} - good one!`;
+            throw new Error('Failed to generate comment using Groq API');
         }
     }
 
