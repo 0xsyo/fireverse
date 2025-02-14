@@ -2,6 +2,8 @@
 
 This repository contains a music bot for Fireverse that automates the process of interacting with the Fireverse music platform. The bot logs in with multiple accounts, plays recommended songs, likes them, and leaves comments.
 
+[Register Link](https://web3.fireverseai.com/login/?invite=8IPB6A&url=https://app.fireverseai.com/user)
+
 ## Table of Contents
 - [English Instructions](#english-instructions)
   - [Prerequisites](#prerequisites)
