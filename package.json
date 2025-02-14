@@ -1,0 +1,22 @@
+{
+  "name": "fireverse",
+  "version": "1.0.0",
+  "description": "FireVerse - Automation Tool",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "music",
+    "bot",
+    "automation"
+  ],
+  "author": "Syaza",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "chalk": "^4.1.2",
+    "fake-useragent": "^1.0.1"
+  }
+}
