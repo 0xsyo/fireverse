@@ -7,10 +7,12 @@ This repository contains a music bot for Fireverse that automates the process of
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
   - [Usage](#usage)
+  - [Getting GROQ API Keys](#getting-groq-api-keys)
 - [Instruksi Bahasa Indonesia](#instruksi-bahasa-indonesia)
   - [Prasyarat](#prasyarat)
   - [Instalasi](#instalasi)
   - [Penggunaan](#penggunaan)
+  - [Mendapatkan Kunci API GROQ](#mendapatkan-kunci-api-groq)
 
 ## English Instructions
 
@@ -53,6 +55,13 @@ This repository contains a music bot for Fireverse that automates the process of
 
 2. The bot will log in with each account, play recommended songs, like them, and leave comments automatically.
 
+### Getting GROQ API Keys
+1. **Visit the GROQ API website:**
+    Go to [GROQ API](https://console.groq.com/keys) and sign up for an account if you don't already have one.
+
+2. **Create a new API key:**
+    Once logged in, navigate to the API keys section and create a new API key. Copy this key to use in your `.env` file.
+
 ## Instruksi Bahasa Indonesia
 
 ### Prasyarat
@@ -93,4 +102,11 @@ This repository contains a music bot for Fireverse that automates the process of
     ```
 
 2. Bot akan masuk dengan setiap akun, memutar lagu yang direkomendasikan, menyukai mereka, dan meninggalkan komentar secara otomatis.
+
+### Mendapatkan Kunci API GROQ
+1. **Kunjungi situs web GROQ API:**
+    Buka [GROQ API](https://console.groq.com/keys) dan daftar untuk akun jika Anda belum memilikinya.
+
+2. **Buat kunci API baru:**
+    Setelah masuk, navigasikan ke bagian kunci API dan buat kunci API baru. Salin kunci ini untuk digunakan dalam file `.env` Anda.
 ``` ▋
